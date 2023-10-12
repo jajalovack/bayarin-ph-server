@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -16,6 +17,11 @@ return new class extends Migration
             $table->string('payment_method');
             $table->timestamps();
         });
+
+        DB::table('paymentmethods')->insert(array('payment_method'=>'Over the counter (OTC)'));
+        DB::table('paymentmethods')->insert(array('payment_method'=>'Debit/Credit Card'));
+        DB::table('paymentmethods')->insert(array('payment_method'=>'e-Wallet'));
+        DB::table('paymentmethods')->insert(array('payment_method'=>'Direct'));
     }
 
     /**

@@ -45,7 +45,7 @@ class AuthController extends Controller
         ],200);
     }
 
-    public function login()
+    public function login(Request $request)
     {
         $fields=$request->validate([
             'email'=>'required|string|email',
@@ -58,7 +58,7 @@ class AuthController extends Controller
         {
             return response([
                 'message'=>'Bad credentials'
-            ]);
+            ],401);
         }
 
         $token=$user->createToken('qwerty')->plainTextToken;
@@ -66,6 +66,6 @@ class AuthController extends Controller
         return response([
             'user'=>$user,
             'token'=>$token
-        ],201);
+        ],200);
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('bill_category');
             $table->foreign('bill_category')->references('id')->on('categories');
             $table->string('billed_to',150);
+            $table->string('description')->default('No description');
             $table->decimal('amount');
             $table->unsignedTinyInteger('status');
             $table->foreign('status')->references('id')->on('billstatuses');
