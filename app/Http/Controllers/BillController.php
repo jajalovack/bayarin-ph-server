@@ -29,4 +29,20 @@ class BillController extends Controller
         }
         return response($response,200);
     }
+
+    public function bill($id)
+    {
+        $bill=Bill::where('id',$id)->first();
+                
+        return response([
+            'id'=>$bill->id,
+            'refnum'=>$bill->refnum,
+            'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+            'category'=>Category::where('id',$bill->bill_category)->first()->category,
+            'billed_to'=>$bill->billed_to,
+            'description'=>$bill->description,
+            'amount'=>$bill->amount,
+            'status'=>Billstatus::where('id',$bill->status)->first()->status
+        ],200);
+    }
 }

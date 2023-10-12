@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,13 @@ use App\Http\Controllers\BillController;
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
-Route::get('/bills',[BillController::class,'bills']);
 
 Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::post('/logout',[AuthController::class,'logout']);
+    Route::post('/upload',[ImageController::class,'upload']);
+    Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
+    Route::get('/bills',[BillController::class,'bills']);
+    Route::get('/bill/{id}',[BillController::class,'bill']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
