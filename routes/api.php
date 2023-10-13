@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
     Route::get('/bills',[BillController::class,'bills']);
     Route::get('/bill/{id}',[BillController::class,'bill']);
+    Route::get('/profile/{id}',[ProfileController::class,'viewProfile']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
