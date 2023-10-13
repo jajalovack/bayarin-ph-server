@@ -31,6 +31,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/profile/{id}',[ProfileController::class,'viewProfile']);
     Route::get('/transactions',[TransactionController::class,'transactions']);
     Route::get('/transaction/{id}',[TransactionController::class,'transaction']);
+    Route::post('/pay',[TransactionController::class,'pay']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

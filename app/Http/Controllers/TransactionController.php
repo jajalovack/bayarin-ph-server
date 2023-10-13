@@ -77,4 +77,56 @@ class TransactionController extends Controller
             'status'=>$status->status
         ],200);
     }
+
+    public function pay(Request $request)
+    {
+        $fields=$request->validate([
+            'bill_id'=>'required',
+            'payor_id'=>'required',
+            'payment_method'=>'required',
+            'status'=>'required'
+        ]);
+
+        $transaction=Transaction::create([
+            'bill_id'=>$fields['bill_id'],
+            'payor_id'=>$fields['payor_id'],
+            'payment_method'=>$fields['payment_method'],
+            'status'=>$fields['status']
+        ]);
+
+        $bill=Bill::where('id',$request->bill_id)->first();
+        $billedTo=$bill->billed_to;
+        $payor=User::where('id',$request->payor_id)->first();
+        $payorName=$payor->first_name.' '.$payor->last_name;
+        if ($billedTo==$payorName)
+        {
+            $bill->update(['status'=>2]);
+            $status='Paid';
+        }
+        else
+        {
+            $bill->update(['status'=>3]);
+            $status='Paid by '.$payorName;
+        }
+        return response([
+            'id'=>$transaction->id,
+            'bill'=>[
+                'id'=>$bill->id,
+                'refnum'=>$bill->refnum,
+                'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+                'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                'billed_to'=>$bill->billed_to,
+                'description'=>$bill->description,
+                'amount'=>$bill->amount,
+                'status'=>$status,
+            ],
+            'payor'=>[
+                'id'=>$payor->id,
+                'first_name'=>$payor->first_name,
+                'last_name'=>$payor->last_name
+            ],
+            'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
+            'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+        ],201);
+    }
 }

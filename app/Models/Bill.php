@@ -14,6 +14,8 @@ class Bill extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['status'];
+
     public function billers():BelongsTo
     {
         return $this->belongsTo(Biller::class);
