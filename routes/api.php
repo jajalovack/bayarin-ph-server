@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,8 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/bills',[BillController::class,'bills']);
     Route::get('/bill/{id}',[BillController::class,'bill']);
     Route::get('/profile/{id}',[ProfileController::class,'viewProfile']);
+    Route::get('/transactions',[TransactionController::class,'transactions']);
+    Route::get('/transaction/{id}',[TransactionController::class,'transaction']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

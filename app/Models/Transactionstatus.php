@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Transaction;
 
-class Paymentmethod extends Model
+class Transactionstatus extends Model
 {
     use HasFactory;
 
