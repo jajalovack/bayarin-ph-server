@@ -7,6 +7,8 @@ use App\Models\Bill;
 use App\Models\Biller;
 use App\Models\Billstatus;
 use App\Models\Category;
+use App\Models\Transaction;
+use App\Models\User;
 
 class BillController extends Controller
 {
@@ -16,6 +18,15 @@ class BillController extends Controller
         $response=[];
         for ($i=0;$i<count($bill);$i++)
         {
+            $status=Billstatus::where('id',$bill[$i]->status)->first()->status;
+            $transStatus=Transaction::where('bill_id',($i+1))->first();
+            
+            if($bill[$i]->status==3)
+            {
+                $payor=User::where('id',$transStatus->payor_id)->first();
+                $payorName=$payor->first_name.' '.$payor->last_name;
+                $status=$status.' '.$payorName;
+            }
             array_push($response,[
                 'id'=>$bill[$i]->id,
                 'refnum'=>$bill[$i]->refnum,
@@ -24,7 +35,7 @@ class BillController extends Controller
                 'billed_to'=>$bill[$i]->billed_to,
                 'description'=>$bill[$i]->description,
                 'amount'=>$bill[$i]->amount,
-                'status'=>Billstatus::where('id',$bill[$i]->status)->first()->status
+                'status'=>$status
             ]);
         }
         return response($response,200);
@@ -33,16 +44,30 @@ class BillController extends Controller
     public function bill($id)
     {
         $bill=Bill::where('id',$id)->first();
-                
-        return response([
-            'id'=>$bill->id,
-            'refnum'=>$bill->refnum,
-            'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-            'category'=>Category::where('id',$bill->bill_category)->first()->category,
-            'billed_to'=>$bill->billed_to,
-            'description'=>$bill->description,
-            'amount'=>$bill->amount,
-            'status'=>Billstatus::where('id',$bill->status)->first()->status
-        ],200);
+
+        if($bill)
+        {
+            $transStatus=Transaction::where('bill_id',$id)->where('status',1)->first();
+            $billStatus=Billstatus::where('id',$bill->status)->first()->status;
+            if($bill->status==3)
+            {
+                $payor=User::where('id',$transStatus->payor_id)->first();
+                $payorName=$payor->first_name.' '.$payor->last_name;
+                $billStatus=$billStatus.' '.$payorName;
+            }
+                    
+            return response([
+                'id'=>$bill->id,
+                'refnum'=>$bill->refnum,
+                'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+                'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                'billed_to'=>$bill->billed_to,
+                'description'=>$bill->description,
+                'amount'=>$bill->amount,
+                'status'=>$billStatus
+            ],200);
+        }
+
+        return response(['message'=>'Bill not found']);
     }
 }
