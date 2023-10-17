@@ -20,7 +20,7 @@ class BillFactory extends Factory
             'refnum'=>fake()->ean13(),
             'biller_id'=>fake()->randomDigitNotNull(),
             'bill_category'=>fake()->numberBetween(1,5),
-            'billed_to'=>fake()->words(2,true),
+            'billed_to'=>fake()->name(),
             'description'=>fake()->sentence(),
             'amount'=>fake()->randomFloat(2,0.0,99999.99),
             'status'=>1

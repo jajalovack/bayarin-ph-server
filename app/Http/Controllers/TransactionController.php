@@ -161,8 +161,114 @@ class TransactionController extends Controller
         return response(['message'=>'Bill not found'],404);
     }
 
-    // public function refund(Request $request)
-    // {
-            
-    // }
+    public function refund(Request $request)
+    {
+        $fields=$request->validate([
+            'refnum'=>'required'
+        ]);
+
+        $bill=Bill::where('refnum',$request->refnum)->first();
+
+        if (!$bill)
+        {
+            return response(['message'=>'Bill with reference number '.$request->refnum.' does not exist.'],404);
+        }
+
+        $transaction=Transaction::where('bill_id',$bill->id)->where('payor_id',$request->user()->id)->orderBy('id','desc')->first();
+
+        if (!$transaction)
+        {
+            return response(['message'=>'You have not made any transactions with bill '.$request->refnum.'.'],404);
+        }
+
+        $billedTo=$bill->billed_to;
+        $payor=User::where('id',$request->user()->id)->first();
+        $payorName=$payor->first_name.' '.$payor->last_name;
+        if ($billedTo==$payorName)
+        {
+            $status='Paid';
+        }
+        else
+        {
+            $status='Paid by '.$payorName;
+        }
+
+        if ($transaction->status==2)
+        {
+            return response([
+                'message'=>'This transaction is not eligible for refund.',
+                'transaction'=>[
+                    'bill'=>[
+                        'id'=>$bill->id,
+                        'refnum'=>$bill->refnum,
+                        'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'billed_to'=>$bill->billed_to,
+                        'description'=>$bill->description,
+                        'amount'=>$bill->amount,
+                        'status'=>'Unpaid',
+                    ],
+                    'payor'=>[
+                        'id'=>$payor->id,
+                        'first_name'=>$payor->first_name,
+                        'last_name'=>$payor->last_name
+                    ],
+                    'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
+                    'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                ]
+            ],409);
+        }
+        else if ($transaction->status==3)
+        {
+            return response([
+                'message'=>'This transaction is already reversed.',
+                'transaction'=>[
+                    'bill'=>[
+                        'id'=>$bill->id,
+                        'refnum'=>$bill->refnum,
+                        'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'billed_to'=>$bill->billed_to,
+                        'description'=>$bill->description,
+                        'amount'=>$bill->amount,
+                        'status'=>'Unpaid',
+                    ],
+                    'payor'=>[
+                        'id'=>$payor->id,
+                        'first_name'=>$payor->first_name,
+                        'last_name'=>$payor->last_name
+                    ],
+                    'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
+                    'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                ]
+            ],409);
+        }
+        else
+        {
+            $bill->update(['status'=>1]);
+            $transaction->update(['status'=>3]);
+            return response([
+                'message'=>'Transaction reversed.',
+                'transaction'=>[
+                    'bill'=>[
+                        'id'=>$bill->id,
+                        'refnum'=>$bill->refnum,
+                        'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'billed_to'=>$bill->billed_to,
+                        'description'=>$bill->description,
+                        'amount'=>$bill->amount,
+                        'status'=>'Unpaid',
+                    ],
+                    'payor'=>[
+                        'id'=>$payor->id,
+                        'first_name'=>$payor->first_name,
+                        'last_name'=>$payor->last_name
+                    ],
+                    'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
+                    'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                ]
+            ],200);
+        }
+    }
 }
