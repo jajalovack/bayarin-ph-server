@@ -32,7 +32,7 @@ return new class extends Migration
             'last_name'=>'Tejuco',
             'email'=>'dvtejuco@gmail.com',
             'birthdate'=>'2003-02-25',
-            'password'=>'asdfasdf'
+            'password'=>'$2y$10$u3MW5tXVUfbfDZwT2obpJ.dtIBqzto3U6R8VA9MmH2e2FBBgg8o5a'
         ]));
 
         DB::table('users')->insert(array([
@@ -40,7 +40,7 @@ return new class extends Migration
             'last_name'=>'Pascual',
             'email'=>'rpascual@gmail.com',
             'birthdate'=>'1998-02-25',
-            'password'=>'asdfasdf'
+            'password'=>'$2y$10$u3MW5tXVUfbfDZwT2obpJ.dtIBqzto3U6R8VA9MmH2e2FBBgg8o5a'
         ]));
     }
 

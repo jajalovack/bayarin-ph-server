@@ -122,7 +122,6 @@ class TransactionController extends Controller
     {
         $fields=$request->validate([
             'bill_id'=>'required',
-            'payor_id'=>'required',
             'payment_method'=>'required',
             'status'=>'required'
         ]);
@@ -132,16 +131,14 @@ class TransactionController extends Controller
         if ($bill)
         {
             $billedTo=$bill->billed_to;
-            $payor=User::where('id',$request->payor_id)->first();
+            $payor=$request->user();
             $payorName=$payor->first_name.' '.$payor->last_name;
             if ($billedTo==$payorName)
             {
-                $bill->update(['status'=>2]);
                 $status='Paid';
             }
             else
             {
-                $bill->update(['status'=>3]);
                 $status='Paid by '.$payorName;
             }
 
@@ -149,14 +146,22 @@ class TransactionController extends Controller
             {
                 $transaction=Transaction::create([
                     'bill_id'=>$fields['bill_id'],
-                    'payor_id'=>$fields['payor_id'],
+                    'payor_id'=>$request->user()->id,
                     'payment_method'=>$fields['payment_method'],
                     'status'=>$fields['status']
                 ]);
+                if ($billedTo==$payorName)
+                {
+                    $bill->update(['status'=>2]);
+                }
+                else
+                {
+                    $bill->update(['status'=>3]);
+                }
             }
             else
             {
-                return ([
+                return response([
                     'message'=>'Bill is already paid',
                     'bill'=>[
                         'id'=>$bill->id,
@@ -168,7 +173,7 @@ class TransactionController extends Controller
                         'amount'=>$bill->amount,
                         'status'=>$status,
                     ]
-                ]);
+                ],409);
             }
             
             return response([
