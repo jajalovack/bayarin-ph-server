@@ -22,6 +22,7 @@ return new class extends Migration
         DB::table('categories')->insert(array('category'=>'Mortgage'));
         DB::table('categories')->insert(array('category'=>'Credit/Loan'));
         DB::table('categories')->insert(array('category'=>'Prepaid Load'));
+        DB::table('categories')->insert(array('category'=>'Tuition'));
         DB::table('categories')->insert(array('category'=>'Miscellaneous'));
     }
 

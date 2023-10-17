@@ -19,11 +19,11 @@ class BillFactory extends Factory
         return [
             'refnum'=>fake()->ean13(),
             'biller_id'=>fake()->randomDigitNotNull(),
-            'bill_category'=>fake()->numberBetween(1,5),
-            'billed_to'=>fake()->name(),
+            'bill_category'=>fake()->numberBetween(1,6),
+            'billed_to'=>fake()->numberBetween(1,2)==1?fake()->name():fake()->randomElement(['Daniele Tejuco','Raphael Pascual']),
             'description'=>fake()->sentence(),
             'amount'=>fake()->randomFloat(2,0.0,99999.99),
-            'status'=>1
+            'status'=>fake()->numberBetween(1,2)
         ];
     }
 }

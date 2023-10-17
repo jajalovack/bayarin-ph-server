@@ -29,6 +29,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/bills',[BillController::class,'bills']);
     Route::get('/bill/{id}',[BillController::class,'bill']);
     Route::get('/profile',[ProfileController::class,'viewProfile']);
+    Route::get('/alltransactions',[TransactionController::class,'alltransactions']);
     Route::get('/transactions',[TransactionController::class,'transactions']);
     Route::get('/transaction/{id}',[TransactionController::class,'transaction']);
     Route::post('/pay',[TransactionController::class,'pay']);
