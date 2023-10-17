@@ -32,7 +32,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/transactions',[TransactionController::class,'transactions']);
     Route::get('/transaction/{id}',[TransactionController::class,'transaction']);
     Route::post('/pay',[TransactionController::class,'pay']);
-    Route::post('/refund',[TransactionController::class,'refund']);
+    Route::put('/refund',[TransactionController::class,'refund']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
