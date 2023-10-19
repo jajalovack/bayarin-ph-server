@@ -27,8 +27,9 @@ class ImageController extends Controller
         if (file_exists($file)) {
             $image = file_get_contents($file);
             $mime = mime_content_type($file);
+            http_response_code(200);
 
-            return response($image,200)->header('Content-Type', $mime)->status();
+            return response($image,http_response_code(200))->header('Content-Type', $mime);
         }
 
         return response([
