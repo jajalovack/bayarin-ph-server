@@ -31,6 +31,6 @@ class ImageController extends Controller
 
         return response([
             'message'=>'Image not found'
-        ],404);
+        ],200);
     }
 }
