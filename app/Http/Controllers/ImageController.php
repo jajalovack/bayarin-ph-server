@@ -31,8 +31,8 @@ class ImageController extends Controller
             return response($image, 200)->header('Content-Type', $mime);
         }
 
-        return response([
-            'message' => 'Image not found'
-        ], 404);
+        // return response([
+        //     'message' => 'Image not found'
+        // ], 404);
     }
 }
