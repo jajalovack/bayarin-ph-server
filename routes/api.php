@@ -21,7 +21,6 @@ use App\Http\Controllers\TransactionController;
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
-Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
 
 Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::post('/logout',[AuthController::class,'logout']);
@@ -29,6 +28,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
     Route::get('/bills',[BillController::class,'bills']);
     Route::get('/bill/{id}',[BillController::class,'bill']);
+    Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
     Route::get('/profile',[ProfileController::class,'viewProfile']);
     Route::get('/alltransactions',[TransactionController::class,'alltransactions']);
     Route::get('/transactions',[TransactionController::class,'transactions']);

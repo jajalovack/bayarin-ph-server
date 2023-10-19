@@ -26,7 +26,7 @@ class ImageController extends Controller
         if (file_exists($file))
         {
             $image=file_get_contents($file);
-            return response($image,200)->header('Content-Type','image');
+            return response($image,200);
         }
 
         return response([
