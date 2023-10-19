@@ -28,11 +28,11 @@ class ImageController extends Controller
             $image = file_get_contents($file);
             $mime = mime_content_type($file);
 
-            return response($image, 409)->header('Content-Type', $mime);
+            return response($image, 200)->header('Content-Type', $mime);
         }
 
-        // return response([
-        //     'message' => 'Image not found'
-        // ], 404);
+        return response([
+            'message' => 'Image not found'
+        ], 404);
     }
 }
