@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 
 class ImageController extends Controller
 {
@@ -24,7 +23,6 @@ class ImageController extends Controller
     public function profile(string $filename)
     {
         $file = storage_path('app/public/images/' . $filename);
-        Log::info('File path: ' . $file);
 
         if (file_exists($file)) {
             $image = file_get_contents($file);
