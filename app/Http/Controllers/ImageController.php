@@ -22,14 +22,13 @@ class ImageController extends Controller
 
     public function profile(string $filename)
     {
-        $file = str_replace('%dot','.',storage_path('app/public/images/' . $filename));
+        $file = storage_path('app/public/images/' . $filename);
 
         if (file_exists($file)) {
             $image = file_get_contents($file);
             $mime = mime_content_type($file);
-            http_response_code(200);
 
-            return response($image,http_response_code(200))->header('Content-Type', $mime);
+            return response($image,200)->header('Content-Type', $mime);
         }
 
         return response([
