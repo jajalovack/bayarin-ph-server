@@ -9,20 +9,36 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    
+    // public function up(): void
+    // {
+    //     Schema::create('bills', function (Blueprint $table) {
+    //         $table->id();
+    //         $table->string('refnum');
+    //         $table->unsignedTinyInteger('biller_id');
+    //         $table->foreign('biller_id')->references('id')->on('billers');
+    //         $table->unsignedTinyInteger('bill_category');
+    //         $table->foreign('bill_category')->references('id')->on('categories');
+    //         $table->string('billed_to',150);
+    //         $table->string('description')->default('No description');
+    //         $table->decimal('amount');
+    //         $table->unsignedTinyInteger('status');
+    //         $table->foreign('status')->references('id')->on('billstatuses');
+    //         $table->timestamps();
+    //     });
+    // }
+
     public function up(): void
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->string('refnum');
-            $table->unsignedTinyInteger('biller_id');
-            $table->foreign('biller_id')->references('id')->on('billers');
-            $table->unsignedTinyInteger('bill_category');
-            $table->foreign('bill_category')->references('id')->on('categories');
+            $table->unsignedTinyInteger('biller_id')->index();
+            $table->unsignedTinyInteger('bill_category')->index();
             $table->string('billed_to',150);
             $table->string('description')->default('No description');
             $table->decimal('amount');
-            $table->unsignedTinyInteger('status');
-            $table->foreign('status')->references('id')->on('billstatuses');
+            $table->unsignedTinyInteger('status')->index();
             $table->timestamps();
         });
     }

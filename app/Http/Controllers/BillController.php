@@ -68,6 +68,6 @@ class BillController extends Controller
             ],200);
         }
 
-        return response(['message'=>'Bill not found']);
+        return response(['message'=>'Bill not found'],404);
     }
 }
