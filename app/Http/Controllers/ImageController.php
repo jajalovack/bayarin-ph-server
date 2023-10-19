@@ -22,7 +22,7 @@ class ImageController extends Controller
 
     public function profile(string $filename)
     {
-        $file = storage_path('app/public/images/' . $filename);
+        $file = str_replace('%dot','.',storage_path('app/public/images/' . $filename));
 
         if (file_exists($file)) {
             $image = file_get_contents($file);
