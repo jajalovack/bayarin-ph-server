@@ -22,15 +22,16 @@ class ImageController extends Controller
 
     public function profile(string $filename)
     {
-        $file=storage_path('app/public/images/'.$filename);
-        if (file_exists($file))
-        {
-            $image=file_get_contents($file);
-            return response($image,200);
+        $file = storage_path('app/public/images/' . $filename);
+        if (file_exists($file)) {
+            $image = file_get_contents($file);
+            $mime = mime_content_type($file);
+
+            return response($image, 200)->header('Content-Type', $mime);
         }
 
         return response([
-            'message'=>'Image not found'
-        ],404);
+            'message' => 'Image not found'
+        ], 404);
     }
 }
