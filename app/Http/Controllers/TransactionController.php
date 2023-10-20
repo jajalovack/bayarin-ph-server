@@ -59,6 +59,7 @@ class TransactionController extends Controller
             $payor=User::where('id',$transaction[$i]->payor_id)->first();
             $method=Paymentmethod::where('id',$transaction[$i]->payment_method)->first();
             $status=Transactionstatus::where('id',$transaction[$i]->status)->first();
+            $billStatus=Billstatus::where('id',$bill->status)->first()->status;
             array_push($response,[
                 'id'=>$transaction[$i]->id,
                 'bill'=>[
@@ -69,12 +70,7 @@ class TransactionController extends Controller
                     'billed_to'=>$bill->billed_to,
                     'description'=>$bill->description,
                     'amount'=>$bill->amount,
-                    'status'=>Billstatus::where('id',$bill->status)->first()->status
-                ],
-                'payor'=>[
-                    'id'=>$payor->id,
-                    'first_name'=>$payor->first_name,
-                    'last_name'=>$payor->last_name
+                    'status'=>$bill->status==3?'Paid by '.$payor->first_name.' '.$payor->last_name:$billStatus
                 ],
                 'payment_method'=>$method->payment_method,
                 'status'=>$status->status
@@ -103,7 +99,7 @@ class TransactionController extends Controller
                     'billed_to'=>$bill->billed_to,
                     'description'=>$bill->description,
                     'amount'=>$bill->amount,
-                    'status'=>Billstatus::where('id',$bill->status)->first()->status
+                    'status'=>Billstatus::where('id',$bill->status)->first()->status.' '.$payor->first_name.' '.$payor->last_name
                 ],
                 'payor'=>[
                     'id'=>$payor->id,
