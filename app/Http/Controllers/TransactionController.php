@@ -62,30 +62,21 @@ class TransactionController extends Controller
         $transaction=Transaction::where('id',$id)->first();
         if ($transaction)
         {
-            $bill=Bill::where('id',$transaction->bill_id)->first();
-            $payor=User::where('id',$transaction->payor_id)->first();
-            $method=Paymentmethod::where('id',$transaction->payment_method)->first();
-            $status=Transactionstatus::where('id',$transaction->status)->first();
-            return response([
-                'id'=>$transaction->id,
-                'bill'=>[
-                    'id'=>$bill->id,
-                    'refnum'=>$bill->refnum,
-                    'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                    'category'=>Category::where('id',$bill->bill_category)->first()->category,
-                    'billed_to'=>$bill->billed_to,
-                    'description'=>$bill->description,
-                    'amount'=>$bill->amount,
-                    'status'=>Billstatus::where('id',$bill->status)->first()->status.' '.$payor->first_name.' '.$payor->last_name
+            $transactionResource = new TransactionResource($transaction);
+            $transactionArray = $transactionResource->toArray(request());
+
+            $payor = User::where('id', $transaction->payor_id)->first();
+            $payorArray = [
+                'payor' => [
+                    'id' => $payor->id,
+                    'first_name' => $payor->first_name,
+                    'last_name' => $payor->last_name
                 ],
-                'payor'=>[
-                    'id'=>$payor->id,
-                    'first_name'=>$payor->first_name,
-                    'last_name'=>$payor->last_name
-                ],
-                'payment_method'=>$method->payment_method,
-                'status'=>$status->status
-            ],200);
+            ];
+
+            $response = collect($transactionArray)->merge($payorArray)->all();
+
+            return response($response, 200);
         }
 
         return response(['message'=>'Transaction not found'],404);
