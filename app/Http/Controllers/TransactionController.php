@@ -11,6 +11,7 @@ use App\Models\Transactionstatus;
 use App\Models\Biller;
 use App\Models\Category;
 use App\Models\Billstatus;
+use App\Http\Resources\TransactionResource;
 
 class TransactionController extends Controller
 {
@@ -52,32 +53,8 @@ class TransactionController extends Controller
     public function transactions(Request $request)
     {
         $transaction=Transaction::where('payor_id',$request->user()->id)->get();
-        $response=[];
-        for ($i=0;$i<count($transaction);$i++)
-        {
-            $bill=Bill::where('id',$transaction[$i]->bill_id)->first();
-            $payor=User::where('id',$transaction[$i]->payor_id)->first();
-            $method=Paymentmethod::where('id',$transaction[$i]->payment_method)->first();
-            $status=Transactionstatus::where('id',$transaction[$i]->status)->first();
-            $billStatus=Billstatus::where('id',$bill->status)->first()->status;
-            array_push($response,[
-                'id'=>$transaction[$i]->id,
-                'bill'=>[
-                    'id'=>$bill->id,
-                    'refnum'=>$bill->refnum,
-                    'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                    'category'=>Category::where('id',$bill->bill_category)->first()->category,
-                    'billed_to'=>$bill->billed_to,
-                    'description'=>$bill->description,
-                    'amount'=>$bill->amount,
-                    'status'=>$bill->status==3?'Paid by '.$payor->first_name.' '.$payor->last_name:$billStatus
-                ],
-                'payment_method'=>$method->payment_method,
-                'status'=>$status->status
-            ]);
-        }
 
-        return response($response,200);
+        return response(TransactionResource::collection($transaction),200);
     }
 
     public function transaction($id)

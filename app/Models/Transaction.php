@@ -30,12 +30,12 @@ class Transaction extends Model
         return $this->belongsTo(Bill::class);
     }
 
-    public function paymentmethods():BelongsTo
+    public function paymentmethod():BelongsTo
     {
         return $this->belongsTo(Paymentmethod::class);
     }
 
-    public function transactionstatuses():BelongsTo
+    public function transactionstatus():BelongsTo
     {
         return $this->belongsTo(Transactionstatus::class);
     }

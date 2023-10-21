@@ -34,7 +34,7 @@ return new class extends Migration
             $table->id();
             $table->string('refnum');
             $table->unsignedTinyInteger('biller_id')->index();
-            $table->unsignedTinyInteger('bill_category')->index();
+            $table->unsignedTinyInteger('category_id')->index();
             $table->string('billed_to',150);
             $table->string('description')->default('No description');
             $table->decimal('amount');
