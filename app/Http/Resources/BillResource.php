@@ -16,8 +16,10 @@ class BillResource extends JsonResource
     public function toArray(Request $request): array
     {
         $transaction = $this->transactions->last();
-
-        $payor = User::where('id', $transaction->payor_id)->first();
+        if ($transaction)
+        {
+            $payor = User::where('id', $transaction->payor_id)->first();
+        }
 
         return [
             'id'=>$this->id,
