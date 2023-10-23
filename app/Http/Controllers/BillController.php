@@ -9,6 +9,7 @@ use App\Models\Billstatus;
 use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Http\Resources\BillResource;
 
 class BillController extends Controller
 {
@@ -43,29 +44,31 @@ class BillController extends Controller
 
     public function bill($id)
     {
-        $bill=Bill::where('id',$id)->first();
+        $bill=Bill::where('id',$id)->get();
 
         if($bill)
         {
-            $transStatus=Transaction::where('bill_id',$id)->where('status',1)->first();
-            $billStatus=Billstatus::where('id',$bill->status)->first()->status;
-            if($bill->status==3)
-            {
-                $payor=User::where('id',$transStatus->payor_id)->first();
-                $payorName=$payor->first_name.' '.$payor->last_name;
-                $billStatus=$billStatus.' '.$payorName;
-            }
+            // $transStatus=Transaction::where('bill_id',$id)->where('transactionstatus_id',1)->first();
+            // $billStatus=Billstatus::where('id',$bill->billstatus_id)->first()->status;
+            // if($bill->status==3)
+            // {
+            //     $payor=User::where('id',$transStatus->payor_id)->first();
+            //     $payorName=$payor->first_name.' '.$payor->last_name;
+            //     $billStatus=$billStatus.' '.$payorName;
+            // }
                     
-            return response([
-                'id'=>$bill->id,
-                'refnum'=>$bill->refnum,
-                'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                'category'=>Category::where('id',$bill->bill_category)->first()->category,
-                'billed_to'=>$bill->billed_to,
-                'description'=>$bill->description,
-                'amount'=>$bill->amount,
-                'status'=>$billStatus
-            ],200);
+            // return response([
+            //     'id'=>$bill->id,
+            //     'refnum'=>$bill->refnum,
+            //     'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+            //     'category'=>Category::where('id',$bill->category_id)->first()->category,
+            //     'billed_to'=>$bill->billed_to,
+            //     'description'=>$bill->description,
+            //     'amount'=>$bill->amount,
+            //     'status'=>$billStatus
+            // ],200);
+
+            return response(BillResource::collection($bill)->first(),200);
         }
 
         return response(['message'=>'Bill not found'],404);

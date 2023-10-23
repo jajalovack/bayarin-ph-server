@@ -20,8 +20,8 @@ class TransactionFactory extends Factory
         return [
             'bill_id'=>fake()->numberBetween(1,50),
             'payor_id'=>fake()->numberBetween(1,2),
-            'payment_method_id'=>fake()->numberBetween(1,4),
-            'status'=>fake()->numberBetween(1,3)
+            'paymentmethod_id'=>fake()->numberBetween(1,4),
+            'transactionstatus_id'=>fake()->numberBetween(1,3)
         ];
     }
 }

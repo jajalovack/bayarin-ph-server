@@ -12,6 +12,7 @@ use App\Models\Biller;
 use App\Models\Category;
 use App\Models\Billstatus;
 use App\Http\Resources\TransactionResource;
+use App\Http\Resources\BillResource;
 
 class TransactionController extends Controller
 {
@@ -86,8 +87,8 @@ class TransactionController extends Controller
     {
         $fields=$request->validate([
             'bill_id'=>'required',
-            'payment_method'=>'required',
-            'status'=>'required'
+            'paymentmethod_id'=>'required',
+            'transactionstatus_id'=>'required'
         ]);
 
         $bill=Bill::where('id',$request->bill_id)->first();
@@ -106,21 +107,21 @@ class TransactionController extends Controller
                 $status='Paid by '.$payorName;
             }
 
-            if ($bill->status==1)
+            if ($bill->billstatus_id==1)
             {
                 $transaction=Transaction::create([
                     'bill_id'=>$fields['bill_id'],
                     'payor_id'=>$request->user()->id,
-                    'payment_method'=>$fields['payment_method'],
-                    'status'=>$fields['status']
+                    'paymentmethod_id'=>$fields['paymentmethod_id'],
+                    'transactionstatus_id'=>$fields['transactionstatus_id']
                 ]);
                 if ($billedTo==$payorName)
                 {
-                    $bill->update(['status'=>2]);
+                    $bill->update(['billstatus_id'=>2]);
                 }
                 else
                 {
-                    $bill->update(['status'=>3]);
+                    $bill->update(['billstatus_id'=>3]);
                 }
             }
             else
@@ -131,7 +132,7 @@ class TransactionController extends Controller
                         'id'=>$bill->id,
                         'refnum'=>$bill->refnum,
                         'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'category'=>Category::where('id',$bill->category_id)->first()->category,
                         'billed_to'=>$bill->billed_to,
                         'description'=>$bill->description,
                         'amount'=>$bill->amount,
@@ -146,7 +147,7 @@ class TransactionController extends Controller
                     'id'=>$bill->id,
                     'refnum'=>$bill->refnum,
                     'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                    'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                    'category'=>Category::where('id',$bill->category_id)->first()->category,
                     'billed_to'=>$bill->billed_to,
                     'description'=>$bill->description,
                     'amount'=>$bill->amount,
@@ -157,8 +158,8 @@ class TransactionController extends Controller
                     'first_name'=>$payor->first_name,
                     'last_name'=>$payor->last_name
                 ],
-                'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
-                'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                'status'=>Transactionstatus::where('id',$transaction->transactionstatus_id)->first()->status,
+                'payment_method'=>Paymentmethod::where('id',$transaction->paymentmethod_id)->first()->payment_method
             ],201);
         }
 
@@ -206,7 +207,7 @@ class TransactionController extends Controller
                         'id'=>$bill->id,
                         'refnum'=>$bill->refnum,
                         'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'category'=>Category::where('id',$bill->category_id)->first()->category,
                         'billed_to'=>$bill->billed_to,
                         'description'=>$bill->description,
                         'amount'=>$bill->amount,
@@ -217,8 +218,8 @@ class TransactionController extends Controller
                         'first_name'=>$payor->first_name,
                         'last_name'=>$payor->last_name
                     ],
-                    'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
-                    'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                    'status'=>Transactionstatus::where('id',$transaction->transactionstatus_id)->first()->status,
+                    'payment_method'=>Paymentmethod::where('id',$transaction->paymentmethod_id)->first()->payment_method
                 ]
             ],409);
         }
@@ -231,7 +232,7 @@ class TransactionController extends Controller
                         'id'=>$bill->id,
                         'refnum'=>$bill->refnum,
                         'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'category'=>Category::where('id',$bill->category_id)->first()->category,
                         'billed_to'=>$bill->billed_to,
                         'description'=>$bill->description,
                         'amount'=>$bill->amount,
@@ -242,15 +243,15 @@ class TransactionController extends Controller
                         'first_name'=>$payor->first_name,
                         'last_name'=>$payor->last_name
                     ],
-                    'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
-                    'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                    'status'=>Transactionstatus::where('id',$transaction->transactionstatus_id)->first()->status,
+                    'payment_method'=>Paymentmethod::where('id',$transaction->paymentmethod_id)->first()->payment_method
                 ]
             ],409);
         }
         else
         {
-            $bill->update(['status'=>1]);
-            $transaction->update(['status'=>3]);
+            $bill->update(['billstatus_id'=>1]);
+            $transaction->update(['transactionstatus_id'=>3]);
             return response([
                 'message'=>'Transaction reversed.',
                 'transaction'=>[
@@ -258,7 +259,7 @@ class TransactionController extends Controller
                         'id'=>$bill->id,
                         'refnum'=>$bill->refnum,
                         'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
-                        'category'=>Category::where('id',$bill->bill_category)->first()->category,
+                        'category'=>Category::where('id',$bill->category_id)->first()->category,
                         'billed_to'=>$bill->billed_to,
                         'description'=>$bill->description,
                         'amount'=>$bill->amount,
@@ -269,8 +270,8 @@ class TransactionController extends Controller
                         'first_name'=>$payor->first_name,
                         'last_name'=>$payor->last_name
                     ],
-                    'status'=>Transactionstatus::where('id',$transaction->status)->first()->status,
-                    'payment_method'=>Paymentmethod::where('id',$transaction->payment_method)->first()->payment_method
+                    'status'=>Transactionstatus::where('id',$transaction->transactionstatus_id)->first()->status,
+                    'payment_method'=>Paymentmethod::where('id',$transaction->paymentmethod_id)->first()->payment_method
                 ]
             ],200);
         }

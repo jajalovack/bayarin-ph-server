@@ -16,8 +16,8 @@ class Transaction extends Model
     protected $fillable = [
         'bill_id',
         'payor_id',
-        'payment_method',
-        'status'
+        'paymentmethod_id',
+        'transactionstatus_id'
     ];
 
     public function user():BelongsTo

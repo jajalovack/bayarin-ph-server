@@ -15,7 +15,7 @@ class Bill extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status'];
+    protected $fillable = ['billstatus_id'];
 
     public function biller():BelongsTo
     {
