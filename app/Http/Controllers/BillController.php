@@ -19,7 +19,7 @@ class BillController extends Controller
         $response=[];
         for ($i=0;$i<count($bill);$i++)
         {
-            $status=Billstatus::where('id',$bill[$i]->status)->first()->status;
+            $status=Billstatus::where('id',$bill[$i]->billstatus_id)->first()->status;
             $transStatus=Transaction::where('bill_id',($i+1))->first();
             
             if($bill[$i]->status==3)
@@ -32,7 +32,7 @@ class BillController extends Controller
                 'id'=>$bill[$i]->id,
                 'refnum'=>$bill[$i]->refnum,
                 'biller'=>Biller::where('id',$bill[$i]->biller_id)->first()->biller,
-                'category'=>Category::where('id',$bill[$i]->bill_category)->first()->category,
+                'category'=>Category::where('id',$bill[$i]->category_id)->first()->category,
                 'billed_to'=>$bill[$i]->billed_to,
                 'description'=>$bill[$i]->description,
                 'amount'=>$bill[$i]->amount,
