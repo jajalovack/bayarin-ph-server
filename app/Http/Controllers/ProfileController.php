@@ -29,7 +29,7 @@ class ProfileController extends Controller
             'id'=>$request->user()->id,
             'first_name'=>$request->user()->first_name,
             'last_name'=>$request->user()->last_name,
-            'profile_pic'=>str_replace('\\','/',url('api/profilepic/'.str_replace('.','p3r10D',$request->user()->profilePic))),
+            'profile_pic'=>str_replace('http','https'str_replace('\\','/',url('api/profilepic/'.str_replace('.','p3r10D',$request->user()->profilePic)))),
             'email'=>$request->user()->email,
             'birthdate'=>$request->user()->birthdate,
             'isVerified'=>$request->user()->isVerified,
