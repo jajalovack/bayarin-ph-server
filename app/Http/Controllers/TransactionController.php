@@ -110,7 +110,7 @@ class TransactionController extends Controller
             if ($bill->billstatus_id==1)
             {
                 $transaction=Transaction::create([
-                    'bill_id'=>$fields['bill_id'],
+                    'bill_id'=>$bill->id,
                     'payor_id'=>$request->user()->id,
                     'paymentmethod_id'=>$fields['paymentmethod_id'],
                     'transactionstatus_id'=>$fields['transactionstatus_id']
