@@ -38,7 +38,7 @@ return new class extends Migration
             $table->string('billed_to',150);
             $table->string('description')->default('No description');
             $table->decimal('amount');
-            $table->unsignedTinyInteger('status')->index();
+            $table->unsignedTinyInteger('billstatus_id')->index();
             $table->timestamps();
         });
     }

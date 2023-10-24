@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\BillerController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
@@ -28,6 +29,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/profilepic/{filename}',[ImageController::class,'profile'])->where('filename','.*');
     Route::get('/bills',[BillController::class,'bills']);
     Route::get('/bill/{id}',[BillController::class,'bill']);
+    Route::get('/billers',[BillerController::class,'billers']);
     Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
     Route::get('/profile',[ProfileController::class,'viewProfile']);
     Route::get('/alltransactions',[TransactionController::class,'alltransactions']);

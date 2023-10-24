@@ -33,7 +33,7 @@ return new class extends Migration
             $table->unsignedBigInteger('bill_id')->index();
             $table->unsignedBigInteger('payor_id')->index();
             $table->unsignedTinyInteger('paymentmethod_id')->index();
-            $table->unsignedTinyInteger('status')->index();
+            $table->unsignedTinyInteger('transactionstatus_id')->index();
             $table->timestamps();
         });
     }
