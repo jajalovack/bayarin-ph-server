@@ -8,6 +8,7 @@ use App\Http\Controllers\BillerController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\PaymentMethodController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::get('/transaction/{id}',[TransactionController::class,'transaction']);
     Route::post('/pay',[TransactionController::class,'pay']);
     Route::put('/refund',[TransactionController::class,'refund']);
+    Route::get('/paymentmethods',[PaymentMethodController::class,'paymentMethods']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
