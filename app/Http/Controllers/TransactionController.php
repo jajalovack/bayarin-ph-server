@@ -53,7 +53,7 @@ class TransactionController extends Controller
 
     public function transactions(Request $request)
     {
-        $transaction=Transaction::where('payor_id',$request->user()->id)->get();
+        $transaction=Transaction::where('payor_id',$request->user()->id)->orderBy('created_at','desc')->get();
 
         return response(TransactionResource::collection($transaction),200);
     }
