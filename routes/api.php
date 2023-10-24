@@ -28,7 +28,7 @@ Route::group(['middleware'=>['auth:sanctum']],function() {
     Route::post('/logout',[AuthController::class,'logout']);
     Route::get('/profilepic/{filename}',[ImageController::class,'profile'])->where('filename','.*');
     Route::get('/bills',[BillController::class,'bills']);
-    Route::get('/bill/{id}',[BillController::class,'bill']);
+    Route::get('/bill/{refnum}',[BillController::class,'bill']);
     Route::get('/billers',[BillerController::class,'billers']);
     Route::get('/profilepic/{filename}',[ImageController::class,'profile']);
     Route::get('/profile',[ProfileController::class,'viewProfile']);

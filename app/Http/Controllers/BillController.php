@@ -42,9 +42,9 @@ class BillController extends Controller
         return response($response,200);
     }
 
-    public function bill($id)
+    public function bill($refnum)
     {
-        $bill=Bill::where('id',$id)->get();
+        $bill=Bill::where('refnum',$refnum)->get();
 
         if($bill)
         {
