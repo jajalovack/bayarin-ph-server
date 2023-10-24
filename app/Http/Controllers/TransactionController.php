@@ -86,12 +86,12 @@ class TransactionController extends Controller
     public function pay(Request $request)
     {
         $fields=$request->validate([
-            'bill_id'=>'required',
+            'refnum'=>'required',
             'paymentmethod_id'=>'required',
             'transactionstatus_id'=>'required'
         ]);
 
-        $bill=Bill::where('id',$request->bill_id)->first();
+        $bill=Bill::where('refnum',$request->refnum)->first();
 
         if ($bill)
         {
