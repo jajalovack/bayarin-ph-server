@@ -115,6 +115,24 @@ class TransactionController extends Controller
                     'paymentmethod_id'=>$fields['paymentmethod_id'],
                     'transactionstatus_id'=>$fields['transactionstatus_id']
                 ]);
+
+                if ($request->transactionstatus_id==2)
+                {
+                    return response([
+                        'message'=>'Transaction Failed',
+                        'bill'=>[
+                            'id'=>$bill->id,
+                            'refnum'=>$bill->refnum,
+                            'biller'=>Biller::where('id',$bill->biller_id)->first()->biller,
+                            'category'=>Category::where('id',$bill->category_id)->first()->category,
+                            'billed_to'=>$bill->billed_to,
+                            'description'=>$bill->description,
+                            'amount'=>$bill->amount,
+                            'status'=>'Unpaid',
+                        ]
+                    ],400);
+                }
+
                 if ($billedTo==$payorName)
                 {
                     $bill->update(['billstatus_id'=>2]);
