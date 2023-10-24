@@ -30,7 +30,8 @@ class TransactionResource extends JsonResource
                 'status'=>$bill->billstatus_id==3?'Paid by '.$payor->first_name.' '.$payor->last_name:$billStatus->status
             ],
             'payment_method'=>$this->paymentmethod->payment_method,
-            'status'=>$this->transactionstatus->status
+            'status'=>$this->transactionstatus->status,
+            'date'=>$this->transactionstatus_id==3?$this->updated_at->format('Y, F d, H:ia'):$this->created_at->format('Y, F d, H:ia')
         ];
     }
 }
